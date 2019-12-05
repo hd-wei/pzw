@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx.xsd">
+	
+	<!-- 属性扫描 -->
+    <!-- 连接数据库 -->
+    <!-- c3p0 -->    
+   <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" >        
+      <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+      <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/t43"/>
+      <property name="user" value="root"/>
+      <property name="password" value="pzw123"/>
+</bean>  
+
+     <!-- 配置SqlSessionFactoryBean-->
+    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+       <property name="dataSource" ref="dataSource"></property>
+       <!-- 加载mybatis核心配置文件 -->
+       <property name="configLocation" value="classpath:SqlMapConfig.xml"></property>
+       <!-- 配置别名包扫描 -->
+       <property name="typeAliasesPackage" value="cn.pzw.pojo"></property>
+    </bean>
+
+
+     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+   		<!-- basePackage：配置映射包装扫描，多个包时用","或";"分隔 -->
+      <property name="basePackage" value="cn.pzw.dao" />
+     </bean>
+	</beans>
